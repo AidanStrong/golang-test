@@ -47,33 +47,29 @@ func main() {
 
 //handler func
 func playsHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "GET":
-		w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
 
-		idFromUrl, _ := strconv.ParseInt(getBookId(r.RequestURI), 10, 64)
-		fmt.Println("After convert: ", idFromUrl)
+	idFromUrl, _ := strconv.ParseInt(getBookId(r.RequestURI), 10, 64)
+	fmt.Println("After convert: ", idFromUrl)
 
-		if idFromUrl == 0 {
-			json.NewEncoder(w).Encode(bookArray)
-			return
-		}
-
-		for _, book := range bookArray {
-			if book.Id == idFromUrl {
-				fmt.Fprintln(w, "There are", book.Copies, "copies left of", book.Title, "in the Shakespeare library")
-			}
-		}
-
-		if idFromUrl > int64(len(bookArray)) {
-			json.NewEncoder(w).Encode(bookArray)
-
-		} else {
-			json.NewEncoder(w).Encode(bookArray[idFromUrl-1])
-		}
-	case "POST":
-		fmt.Println("THIS IS A POST!")
+	if idFromUrl == 0 {
+		json.NewEncoder(w).Encode(bookArray)
+		return
 	}
+
+	for _, book := range bookArray {
+		if book.Id == idFromUrl {
+			fmt.Fprintln(w, "There are", book.Copies, "copies left of", book.Title, "in the Shakespeare library")
+		}
+	}
+
+	if idFromUrl > int64(len(bookArray)) {
+		json.NewEncoder(w).Encode(bookArray)
+
+	} else {
+		json.NewEncoder(w).Encode(bookArray[idFromUrl-1])
+	}
+
 }
 
 // func checkoutPlay(w http.ResponseWriter, r *http.Request) {
